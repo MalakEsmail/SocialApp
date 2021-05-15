@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:socialapp/register_cubit/states.dart';
@@ -14,14 +15,12 @@ class SocialRegisterCubit extends Cubit<SocialRegisterStates> {
     @required String phone,
   }) {
     emit(SocialRegisterLoadingState());
-    /* DioHelper.postData(
-        url: REGISTER,
-        data: {'name': name,'email': email, 'password': password,'phone': phone,}).then((value) {
-      loginModel = LoginModel.fromJson(value.data);
-      emit(SocialRegisterSuccessState(loginModel));
-    }).catchError((error) {
-      emit(SocialRegisterErrorState(error.toString()));
-    });*/
+    FirebaseAuth.instance
+        .createUserWithEmailAndPassword(email: email, password: password)
+        .then((value) => emit(SocialRegisterSuccessState()))
+        .catchError((error) {
+      return emit(SocialRegisterErrorState(error.toString()));
+    });
   }
 
   IconData suffix = Icons.visibility_outlined;
