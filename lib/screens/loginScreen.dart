@@ -50,6 +50,11 @@ class LoginScreen extends StatelessWidget {
                               if (value.isEmpty) {
                                 return 'please enter your email';
                               }
+                              if (!RegExp(
+                                      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                  .hasMatch(value)) {
+                                     return 'please enter valid email';
+                                  }
                             },
                             label: 'Email Address',
                             prefix: Icons.email_outlined),

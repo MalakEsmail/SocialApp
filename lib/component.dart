@@ -1,6 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+void navigateAndFinish(
+  context,
+  widget,
+) =>
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(
+        builder: (context) => widget,
+      ),
+      (route) {
+        return false;
+      },
+    );
 Widget defaultFormField({
   @required TextEditingController controller,
   @required TextInputType type,

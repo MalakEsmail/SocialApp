@@ -14,11 +14,11 @@ class SocialLoginCubit extends Cubit<SocialLoginStates> {
     FirebaseAuth.instance
         .signInWithEmailAndPassword(email: email, password: password)
         .then((value) {
-          print(value.user.email);
-          emit(SocialLoginSuccessState());
-        })
-        .catchError((error) {
-       emit(SocialLoginErrorState(error.toString()));
+      print(value.user.email);
+      emit(SocialLoginSuccessState());
+    }).catchError((error) {
+      print(error.toString());
+      emit(SocialLoginErrorState(error.toString()));
     });
   }
 

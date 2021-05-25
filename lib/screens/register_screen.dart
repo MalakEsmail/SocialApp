@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:socialapp/component.dart';
 import 'package:socialapp/register_cubit/cubit.dart';
 import 'package:socialapp/register_cubit/states.dart';
+import 'package:socialapp/screens/home.dart';
 
 class RegisterScreen extends StatelessWidget {
   var formKey = GlobalKey<FormState>();
@@ -18,7 +19,10 @@ class RegisterScreen extends StatelessWidget {
       create: (BuildContext context) => SocialRegisterCubit(),
       child: BlocConsumer<SocialRegisterCubit, SocialRegisterStates>(
         listener: (context, state) {
-        /*  if (state is SocialRegisterSuccessState) {
+          if (state is SocialCreateUserSuccessState) {
+            navigateAndFinish(context, SocialLayout());
+          }
+          /*  if (state is SocialRegisterSuccessState) {
             if (state.loginModel.status) {
               CacheHelper.saveData(
                       key: 'token', value: state.loginModel.data.token)
@@ -67,7 +71,7 @@ class RegisterScreen extends StatelessWidget {
                             },
                             label: 'User name',
                             prefix: Icons.person),
-                             SizedBox(
+                        SizedBox(
                           height: 20,
                         ),
                         defaultFormField(
