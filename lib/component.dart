@@ -125,7 +125,7 @@ Color chooseToastColor(ToastStates state) {
 }
 
 String token = '';
-
+String uId='';
 void signOut(context){
 /*CacheHelper.removeData(key: 'token').then((value) {
                   if (value) {

@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:socialapp/component.dart';
 import 'package:socialapp/login_cubit/cubit.dart';
 import 'package:socialapp/login_cubit/states.dart';
+import 'package:socialapp/network/local.dart';
+import 'package:socialapp/screens/home.dart';
 import 'package:socialapp/screens/register_screen.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -19,6 +21,11 @@ class LoginScreen extends StatelessWidget {
             listener: (context, state) {
           if (state is SocialLoginErrorState) {
             showToast(text: state.error, state: ToastStates.ERROR);
+          }
+          if (state is SocialLoginSuccessState) {
+            CacheHelper.saveData(key: 'uId', value: state.uId).then((value) {
+              navigateAndFinish(context, SocialLayout());
+            });
           }
         }, builder: (context, state) {
           return Scaffold(
@@ -53,8 +60,8 @@ class LoginScreen extends StatelessWidget {
                               if (!RegExp(
                                       r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                                   .hasMatch(value)) {
-                                     return 'please enter valid email';
-                                  }
+                                return 'please enter valid email';
+                              }
                             },
                             label: 'Email Address',
                             prefix: Icons.email_outlined),

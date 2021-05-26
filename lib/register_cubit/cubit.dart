@@ -33,7 +33,7 @@ class SocialRegisterCubit extends Cubit<SocialRegisterStates> {
     @required String uId,
     @required String phone,
   }) {
-    UserModel model = UserModel(name, email, phone, uId);
+    UserModel model = UserModel(name, email, phone, uId,false);
     FirebaseFirestore.instance
         .collection('users')
         .doc(uId)
