@@ -4,6 +4,7 @@ class FeedsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
+      physics: BouncingScrollPhysics(),
       child: Column(
         children: [
           Card(
@@ -30,7 +31,13 @@ class FeedsScreen extends StatelessWidget {
               ],
             ),
           ),
-          Card(
+           ListView.separated(separatorBuilder: (context,index)=>SizedBox(height: 10.0,),itemBuilder: (context,index)=>buildPostItem(context),itemCount: 10,shrinkWrap: true,physics: NeverScrollableScrollPhysics(),)
+        ,
+        SizedBox(height: 8,)],
+      ),
+    );
+  }
+  Widget buildPostItem(context)=> Card(
             elevation: 10.0,
             clipBehavior: Clip.antiAliasWithSaveLayer,
             margin: EdgeInsets.symmetric(horizontal: 8.0),
@@ -74,7 +81,8 @@ class FeedsScreen extends StatelessWidget {
                                 .copyWith(height: 1.4),
                           )
                         ],
-                      )),
+                      )
+                      ),
                       IconButton(icon: Icon(Icons.more_horiz), onPressed: () {})
                     ],
                   ),
@@ -157,19 +165,15 @@ class FeedsScreen extends StatelessWidget {
                     children: [
                       Expanded(
                         child: InkWell(
-                          child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 5.0),
-                            child: Row(
-                              children: [
-                                IconButton(
-                                    icon: Icon(Icons.favorite_border),
-                                    onPressed: () {}),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Text('120')
-                              ],
-                            ),
+                          child: Row(
+                            children: [
+                              IconButton(
+                                
+                                  icon: Icon(Icons.favorite_border),
+                                  onPressed: () {}),
+                              
+                              Text('120',)
+                            ],
                           ),
                           onTap: () {},
                         ),
@@ -177,7 +181,7 @@ class FeedsScreen extends StatelessWidget {
                       Expanded(
                         child: InkWell(
                           child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 5.0),
+                            padding: const EdgeInsets.symmetric(vertical: 5.0),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
@@ -195,17 +199,61 @@ class FeedsScreen extends StatelessWidget {
                         ),
                       ),
                     ],
-                  )
-               ,Container(
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom:3.0),
+                    child: Container(
                       height: 1.0,
                       width: double.infinity,
                       color: Colors.grey[300],
-                    ), ],
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: InkWell(
+                          onTap: (){},
+                          child: Row(
+                            children: [
+                              CircleAvatar(
+                                radius: 20.0,
+                                backgroundImage: NetworkImage(
+                                    'https://image.freepik.com/free-photo/portrait-young-beautiful-playful-woman-with-bun-posing_176420-12392.jpg'),
+                              ),
+                              SizedBox(
+                                width: 15.0,
+                              ),
+                              Text(
+                                'write commnet ...',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .caption
+                                    .copyWith(height: 1.4),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    InkWell(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 5.0),
+                            child: Row(
+                              children: [
+                                IconButton(
+                                  
+                                    icon: Icon(Icons.favorite_border),
+                                    onPressed: () {}),
+                               
+                                Text('Like')
+                              ],
+                            ),
+                          ),
+                          onTap: () {},
+                        )],
+                  )
+                ],
               ),
             ),
-          ),
-        ],
-      ),
-    );
-  }
+          )
+       ;
 }

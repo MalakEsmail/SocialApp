@@ -32,7 +32,11 @@ class SocialCubit extends Cubit<SocialStates> {
   List<String> titles = ['Home', 'Chats', 'Users', 'Settings'];
   int currentIndex = 0;
   void changeBottomNav(int index) {
-    currentIndex = index;
-    emit(SocialChangeButtomNavState());
+    if (index == 2)
+      emit(SocialNewPostState());
+    else {
+      currentIndex = index;
+      emit(SocialChangeButtomNavState());
+    }
   }
 }

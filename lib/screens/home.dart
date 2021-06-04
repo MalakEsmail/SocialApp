@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:socialapp/component.dart';
 import 'package:socialapp/cubit/cubit.dart';
 import 'package:socialapp/cubit/states.dart';
+import 'package:socialapp/screens/new_post_screen.dart';
 
 class SocialLayout extends StatelessWidget {
   @override
@@ -29,13 +31,19 @@ class SocialLayout extends StatelessWidget {
                 BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
                 BottomNavigationBarItem(icon: Icon(Icons.chat), label: 'Chats'),
                 BottomNavigationBarItem(
+                    icon: Icon(Icons.post_add_outlined), label: 'Post'),
+                BottomNavigationBarItem(
                     icon: Icon(Icons.location_on), label: 'Users'),
                 BottomNavigationBarItem(
                     icon: Icon(Icons.settings), label: 'Settings'),
               ]),
         );
       },
-      listener: (context, state) {},
+      listener: (context, state) {
+        if (state is SocialNewPostState) {
+          navigateTo(context, NewPostScreen());
+        }
+      },
     );
   }
 }
