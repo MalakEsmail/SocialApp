@@ -21,7 +21,7 @@ class SocialRegisterCubit extends Cubit<SocialRegisterStates> {
         .createUserWithEmailAndPassword(email: email, password: password)
         .then((value) {
       createUser(name: name, email: email, uId: value.user.uid, phone: phone);
-    //  emit(SocialRegisterSuccessState());
+      //  emit(SocialRegisterSuccessState());
     }).catchError((error) {
       return emit(SocialRegisterErrorState(error.toString()));
     });
@@ -33,7 +33,15 @@ class SocialRegisterCubit extends Cubit<SocialRegisterStates> {
     @required String uId,
     @required String phone,
   }) {
-    UserModel model = UserModel(name, email, phone, uId,false);
+    UserModel model = UserModel(
+        name: name,
+        email: email,
+        phone: phone,
+        uId: uId,
+        isEmailVerified: false,
+        image:
+            'https://image.freepik.com/free-photo/cheerful-bearded-caucasian-male-with-gentle-smile-dressed-casual-outfit-shows-you-direction-nice-place-indicates-with-thumb-aside_273609-16251.jpg',
+        bio: 'write your bio');
     FirebaseFirestore.instance
         .collection('users')
         .doc(uId)

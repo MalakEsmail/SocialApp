@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:socialapp/models/user_model.dart';
 import 'package:socialapp/screens/chats_screen.dart';
 import 'package:socialapp/screens/feeds_screen.dart';
+import 'package:socialapp/screens/new_post_screen.dart';
 import 'package:socialapp/screens/setting_screen.dart';
 import 'package:socialapp/screens/users_screen.dart';
 
@@ -26,10 +27,11 @@ class SocialCubit extends Cubit<SocialStates> {
   List<Widget> pages = [
     FeedsScreen(),
     ChatsScreen(),
+    NewPostScreen(),
     UsersScreen(),
     SettingsScreen(),
   ];
-  List<String> titles = ['Home', 'Chats', 'Users', 'Settings'];
+  List<String> titles = ['Home', 'Chats', 'Post','Users', 'Settings'];
   int currentIndex = 0;
   void changeBottomNav(int index) {
     if (index == 2)
