@@ -13,10 +13,10 @@ import 'package:socialapp/screens/users_screen.dart';
 class SocialCubit extends Cubit<SocialStates> {
   SocialCubit() : super(SocialInitialState());
   static SocialCubit get(context) => BlocProvider.of(context);
-  UserModel model;
+  UserModel userModel;
   void getUserData() {
     FirebaseFirestore.instance.collection('users').doc(uId).get().then((value) {
-      model = UserModel.fromJAson(value.data());
+      userModel = UserModel.fromJAson(value.data());
       emit(SocialGetUserSuccessStateState());
     }).catchError((error) {
       print(error.toString());
