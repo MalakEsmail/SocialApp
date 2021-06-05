@@ -41,7 +41,7 @@ class SocialRegisterCubit extends Cubit<SocialRegisterStates> {
         isEmailVerified: false,
         image:
             'https://image.freepik.com/free-photo/cheerful-bearded-caucasian-male-with-gentle-smile-dressed-casual-outfit-shows-you-direction-nice-place-indicates-with-thumb-aside_273609-16251.jpg',
-        bio: 'write your bio');
+        bio: 'write your bio',cover: 'https://image.freepik.com/free-vector/engraving-hand-drawn-tropical-leaves-background_23-2148961423.jpg');
     FirebaseFirestore.instance
         .collection('users')
         .doc(uId)
