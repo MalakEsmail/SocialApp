@@ -1,37 +1,25 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:socialapp/component.dart';
 import 'package:socialapp/cubit/cubit.dart';
 import 'package:socialapp/cubit/states.dart';
 
 class EditProfileScreen extends StatelessWidget {
-
   var nameController = TextEditingController();
   var bioController = TextEditingController();
-
-  File image;
-  var picker = ImagePicker();
-  
-  Future<void> getImage() async {
-    var pickedFile = await picker.getImage(source: ImageSource.gallery);
-
-     if (pickedFile != null) {
-        image = File(pickedFile.path);
-      } else {
-        print('No image selected.');
-      }
-     
-  
-  }
+  var phoneController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<SocialCubit, SocialStates>(
         builder: (context, state) {
           var model = SocialCubit.get(context).userModel;
+          var profileImage = SocialCubit.get(context).profileImage;
+          var profileCover = SocialCubit.get(context).profileCover;
+
+          nameController.text = model.name;
+          bioController.text = model.bio;
+          phoneController.text = model.phone;
 
           return Scaffold(
             appBar: defaultAppBar(
@@ -39,7 +27,12 @@ class EditProfileScreen extends StatelessWidget {
                 title: 'Edit Profile',
                 actions: [
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      SocialCubit.get(context).updateUserData(
+                          nameController.text,
+                          phoneController.text,
+                          bioController.text);
+                    },
                     child: Text(
                       'Update',
                       style: TextStyle(
@@ -74,12 +67,16 @@ class EditProfileScreen extends StatelessWidget {
                                       topLeft: Radius.circular(4.0),
                                       topRight: Radius.circular(4.0)),
                                   image: DecorationImage(
-                                      image: NetworkImage('${model.cover}'),
+                                      image: profileCover == null
+                                          ? NetworkImage('${model.cover}')
+                                          : FileImage(profileCover),
                                       fit: BoxFit.cover),
                                 ),
                               ),
                               IconButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    SocialCubit.get(context).getProfileCover();
+                                  },
                                   icon: CircleAvatar(
                                     child: Icon(Icons.camera_alt),
                                   ))
@@ -94,11 +91,15 @@ class EditProfileScreen extends StatelessWidget {
                               backgroundColor: Colors.white,
                               child: CircleAvatar(
                                 radius: 60.0,
-                                backgroundImage: NetworkImage('${model.image}'),
+                                backgroundImage: profileImage == null
+                                    ? NetworkImage('${model.image}')
+                                    : FileImage(profileImage),
                               ),
                             ),
                             IconButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  SocialCubit.get(context).getProfileImage();
+                                },
                                 icon: CircleAvatar(
                                   child: Icon(Icons.camera_alt),
                                 ))
@@ -135,6 +136,20 @@ class EditProfileScreen extends StatelessWidget {
                       },
                       label: 'Bio',
                       prefix: Icons.info_outline),
+                  SizedBox(
+                    height: 10.0,
+                  ),
+                  defaultFormField(
+                      controller: phoneController,
+                      type: TextInputType.phone,
+                      validate: (String value) {
+                        if (value.isEmpty) {
+                          return 'phone must not be empty';
+                        }
+                        //  else null;
+                      },
+                      label: 'Phone',
+                      prefix: Icons.phone),
                 ],
               ),
             ),

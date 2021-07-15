@@ -15,3 +15,27 @@ class SocialGetUserErrorStateState extends SocialStates {
 class SocialChangeButtomNavState extends SocialStates {}
 
 class SocialNewPostState extends SocialStates {}
+
+// to pick profile image from gallery
+class SocialProfileImagePickedSuccessState extends SocialStates {}
+
+class SocialProfileImagePickedErrorState extends SocialStates {}
+
+// to pick cover image from gallery
+
+class SocialCoverImagePickedSuccessState extends SocialStates {}
+
+class SocialCoverImagePickedErrorState extends SocialStates {}
+
+// to upload profile image to firebase
+
+class SocialUploadProfileImageSuccessState extends SocialStates {}
+
+class SocialUploadProfileImageErrorState extends SocialStates {}
+// to upload profile cover to firebase
+
+class SocialUploadCoverImageSuccessState extends SocialStates {}
+
+class SocialUploadCoverImageErrorState extends SocialStates {}
+
+class SocialUserUpdateErrorState extends SocialStates {}
