@@ -28,10 +28,10 @@ class EditProfileScreen extends StatelessWidget {
                 actions: [
                   TextButton(
                     onPressed: () {
-                      SocialCubit.get(context).updateUserData(
-                          nameController.text,
-                          phoneController.text,
-                          bioController.text);
+                      SocialCubit.get(context).updateUser(
+                          name: nameController.text,
+                          phone: phoneController.text,
+                          bio: bioController.text);
                     },
                     child: Text(
                       'Update',
@@ -45,112 +45,171 @@ class EditProfileScreen extends StatelessWidget {
                     width: 15.0,
                   )
                 ]),
-            body: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                children: [
-                  Container(
-                    height: 220.0,
-                    child: Stack(
-                      alignment: Alignment.bottomCenter,
-                      children: [
-                        Align(
-                          alignment: Alignment.topCenter,
-                          child: Stack(
-                            alignment: AlignmentDirectional.topEnd,
+            body: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    Container(
+                      height: 220.0,
+                      child: Stack(
+                        alignment: Alignment.bottomCenter,
+                        children: [
+                          Align(
+                            alignment: Alignment.topCenter,
+                            child: Stack(
+                              alignment: AlignmentDirectional.topEnd,
+                              children: [
+                                Container(
+                                  height: 180.0,
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(4.0),
+                                        topRight: Radius.circular(4.0)),
+                                    image: DecorationImage(
+                                        image: profileCover == null
+                                            ? NetworkImage('${model.cover}')
+                                            : FileImage(profileCover),
+                                        fit: BoxFit.cover),
+                                  ),
+                                ),
+                                IconButton(
+                                    onPressed: () {
+                                      SocialCubit.get(context)
+                                          .getProfileCover();
+                                    },
+                                    icon: CircleAvatar(
+                                      child: Icon(Icons.camera_alt),
+                                    ))
+                              ],
+                            ),
+                          ),
+                          Stack(
+                            alignment: AlignmentDirectional.bottomEnd,
                             children: [
-                              Container(
-                                height: 180.0,
-                                width: double.infinity,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(4.0),
-                                      topRight: Radius.circular(4.0)),
-                                  image: DecorationImage(
-                                      image: profileCover == null
-                                          ? NetworkImage('${model.cover}')
-                                          : FileImage(profileCover),
-                                      fit: BoxFit.cover),
+                              CircleAvatar(
+                                radius: 64,
+                                backgroundColor: Colors.white,
+                                child: CircleAvatar(
+                                  radius: 60.0,
+                                  backgroundImage: profileImage == null
+                                      ? NetworkImage('${model.image}')
+                                      : FileImage(profileImage),
                                 ),
                               ),
                               IconButton(
                                   onPressed: () {
-                                    SocialCubit.get(context).getProfileCover();
+                                    SocialCubit.get(context).getProfileImage();
                                   },
                                   icon: CircleAvatar(
                                     child: Icon(Icons.camera_alt),
                                   ))
                             ],
-                          ),
-                        ),
-                        Stack(
-                          alignment: AlignmentDirectional.bottomEnd,
-                          children: [
-                            CircleAvatar(
-                              radius: 64,
-                              backgroundColor: Colors.white,
-                              child: CircleAvatar(
-                                radius: 60.0,
-                                backgroundImage: profileImage == null
-                                    ? NetworkImage('${model.image}')
-                                    : FileImage(profileImage),
-                              ),
-                            ),
-                            IconButton(
-                                onPressed: () {
-                                  SocialCubit.get(context).getProfileImage();
-                                },
-                                icon: CircleAvatar(
-                                  child: Icon(Icons.camera_alt),
-                                ))
-                          ],
-                        )
-                      ],
+                          )
+                        ],
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 20.0,
-                  ),
-                  defaultFormField(
-                      controller: nameController,
-                      type: TextInputType.name,
-                      validate: (String value) {
-                        if (value.isEmpty) {
-                          return 'name must not be empty';
-                        }
-                        //  else null;
-                      },
-                      label: 'Name',
-                      prefix: Icons.person),
-                  SizedBox(
-                    height: 10.0,
-                  ),
-                  defaultFormField(
-                      controller: bioController,
-                      type: TextInputType.text,
-                      validate: (String value) {
-                        if (value.isEmpty) {
-                          return 'bio must not be empty';
-                        }
-                        //  else null;
-                      },
-                      label: 'Bio',
-                      prefix: Icons.info_outline),
-                  SizedBox(
-                    height: 10.0,
-                  ),
-                  defaultFormField(
-                      controller: phoneController,
-                      type: TextInputType.phone,
-                      validate: (String value) {
-                        if (value.isEmpty) {
-                          return 'phone must not be empty';
-                        }
-                        //  else null;
-                      },
-                      label: 'Phone',
-                      prefix: Icons.phone),
-                ],
+                    SizedBox(
+                      height: 20.0,
+                    ),
+                    if (SocialCubit.get(context).profileImage != null ||
+                        SocialCubit.get(context).profileCover != null)
+                      Row(
+                        children: [
+                          if (SocialCubit.get(context).profileImage != null)
+                            Expanded(
+                                child: Column(
+                              children: [
+                                defaultButton(
+                                    function: () {
+                                      SocialCubit.get(context)
+                                          .uploadProfileImage(
+                                              nameController.text,
+                                              phoneController.text,
+                                              bioController.text);
+                                    },
+                                    text: 'Upload Profile'),
+                                if (state is SocialUserUpdateLoadingState)
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                if (state is SocialUserUpdateLoadingState)
+                                  LinearProgressIndicator()
+                              ],
+                            )),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          if (SocialCubit.get(context).profileCover != null)
+                            Expanded(
+                                child: Column(
+                              children: [
+                                defaultButton(
+                                    function: () {
+                                       SocialCubit.get(context)
+                                          .uploadCoverImage(
+                                              nameController.text,
+                                              phoneController.text,
+                                              bioController.text);
+                                   
+                                    }, text: 'Upload Cover'),
+                                if (state is SocialUserUpdateLoadingState)
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                if (state is SocialUserUpdateLoadingState)
+                                  LinearProgressIndicator()
+                              ],
+                            )),
+                        ],
+                      ),
+                    if (SocialCubit.get(context).profileImage != null ||
+                        SocialCubit.get(context).profileCover != null)
+                      SizedBox(
+                        height: 20.0,
+                      ),
+                    defaultFormField(
+                        controller: nameController,
+                        type: TextInputType.name,
+                        validate: (String value) {
+                          if (value.isEmpty) {
+                            return 'name must not be empty';
+                          }
+                          //  else null;
+                        },
+                        label: 'Name',
+                        prefix: Icons.person),
+                    SizedBox(
+                      height: 10.0,
+                    ),
+                    defaultFormField(
+                        controller: bioController,
+                        type: TextInputType.text,
+                        validate: (String value) {
+                          if (value.isEmpty) {
+                            return 'bio must not be empty';
+                          }
+                          //  else null;
+                        },
+                        label: 'Bio',
+                        prefix: Icons.info_outline),
+                    SizedBox(
+                      height: 10.0,
+                    ),
+                    defaultFormField(
+                        controller: phoneController,
+                        type: TextInputType.phone,
+                        validate: (String value) {
+                          if (value.isEmpty) {
+                            return 'phone must not be empty';
+                          }
+                          //  else null;
+                        },
+                        label: 'Phone',
+                        prefix: Icons.phone),
+                  ],
+                ),
               ),
             ),
           );

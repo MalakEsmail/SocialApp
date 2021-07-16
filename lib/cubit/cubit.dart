@@ -75,18 +75,22 @@ class SocialCubit extends Cubit<SocialStates> {
     }
   }
 
-  String profileImageURL = '';
-
-  void uploadProfileImage() {
+  void uploadProfileImage(
+    @required String name,
+    @required String phone,
+    @required String bio,
+  ) {
+    emit(SocialUserUpdateLoadingState());
     firebase_storage.FirebaseStorage.instance
         .ref()
         .child('users/${Uri.file(profileImage.path).pathSegments.length}')
         .putFile(profileImage)
         .then((value) {
       value.ref.getDownloadURL().then((value) {
-        emit(SocialUploadProfileImageSuccessState());
+        //  emit(SocialUploadProfileImageSuccessState());
         print(value);
-        profileImageURL = value;
+        updateUser(
+            name: name, phone: phone, bio: bio, image: value, cover: null);
       }).catchError((error) {
         emit(SocialUploadProfileImageErrorState());
       });
@@ -95,18 +99,23 @@ class SocialCubit extends Cubit<SocialStates> {
     });
   }
 
-  String coverImageURL = '';
+  void uploadCoverImage(
+    @required String name,
+    @required String phone,
+    @required String bio,
+  ) {
+    emit(SocialUserUpdateLoadingState());
 
-  void uploadCoverImage() {
     firebase_storage.FirebaseStorage.instance
         .ref()
         .child('users/${Uri.file(profileCover.path).pathSegments.length}')
         .putFile(profileCover)
         .then((value) {
       value.ref.getDownloadURL().then((value) {
-        emit(SocialUploadCoverImageSuccessState());
+        //  emit(SocialUploadCoverImageSuccessState());
         print(value);
-        coverImageURL = value;
+        updateUser(
+            name: name, phone: phone, bio: bio, image: null, cover: value);
       }).catchError((error) {
         emit(SocialUploadCoverImageErrorState());
       });
@@ -115,18 +124,36 @@ class SocialCubit extends Cubit<SocialStates> {
     });
   }
 
-  void updateUserData(
-    @required String name,
+  /* void updateUserImages(  @required String name,
     @required String phone,
     @required String bio,
   ) {
+    emit(SocialUserUpdateLoadingState());
+    if (profileCover != null) {
+      uploadCoverImage();
+    } else if (profileImage != null) {
+      uploadProfileImage();
+    } else if (profileImage != null && profileCover != null) {
+    } else {
+      updateUser(name, phone, bio);
+    }
+  }*/
+
+  void updateUser(
+      {@required String name,
+      @required String phone,
+      @required String bio,
+      String image,
+      String cover}) {
     UserModel model = UserModel(
         name: name,
         bio: bio,
         phone: phone,
         isEmailVerified: false,
-        image: profileImageURL,
-        cover: coverImageURL);
+        email: userModel.email,
+        uId: userModel.uId,
+        image: image ?? userModel.image,
+        cover: cover ?? userModel.cover);
 
     FirebaseFirestore.instance
         .collection('users')
