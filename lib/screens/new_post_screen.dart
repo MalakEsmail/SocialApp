@@ -14,23 +14,26 @@ class NewPostScreen extends StatelessWidget {
           return Scaffold(
             appBar:
                 defaultAppBar(context: context, title: 'Create Post', actions: [
-              defaultTextButton(
-                  function: () {
-                    var now = DateTime.now();
+              Container(
+                color: Colors.white,
+                child: defaultTextButton(
+                    function: () {
+                      var now = DateTime.now();
 
-                    if (SocialCubit.get(context).postImage == null) {
-                      SocialCubit.get(context).createPost(
-                        dateTime: now.toString(),
-                        text: textController.text,
-                      );
-                    } else {
-                      SocialCubit.get(context).uploadPostImage(
-                        dateTime: now.toString(),
-                        text: textController.text,
-                      );
-                    }
-                  },
-                  text: 'Post')
+                      if (SocialCubit.get(context).postImage == null) {
+                        SocialCubit.get(context).createPost(
+                          dateTime: now.toString(),
+                          text: textController.text,
+                        );
+                      } else {
+                        SocialCubit.get(context).uploadPostImage(
+                          dateTime: now.toString(),
+                          text: textController.text,
+                        );
+                      }
+                    },
+                    text: 'Post',),
+              )
             ]),
             body: Padding(
               padding: const EdgeInsets.all(20),

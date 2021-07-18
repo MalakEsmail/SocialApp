@@ -24,3 +24,4 @@ class SocialCreateUserErrorState extends SocialRegisterStates {
 }
 
 class SocialRegisterChangePasswordVisibilityState extends SocialRegisterStates {}
+
