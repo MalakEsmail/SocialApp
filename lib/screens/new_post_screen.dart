@@ -17,22 +17,23 @@ class NewPostScreen extends StatelessWidget {
               Container(
                 color: Colors.white,
                 child: defaultTextButton(
-                    function: () {
-                      var now = DateTime.now();
+                  function: () {
+                    var now = DateTime.now();
 
-                      if (SocialCubit.get(context).postImage == null) {
-                        SocialCubit.get(context).createPost(
-                          dateTime: now.toString(),
-                          text: textController.text,
-                        );
-                      } else {
-                        SocialCubit.get(context).uploadPostImage(
-                          dateTime: now.toString(),
-                          text: textController.text,
-                        );
-                      }
-                    },
-                    text: 'Post',),
+                    if (SocialCubit.get(context).postImage == null) {
+                      SocialCubit.get(context).createPost(
+                        dateTime: now.toString(),
+                        text: textController.text,
+                      );
+                    } else {
+                      SocialCubit.get(context).uploadPostImage(
+                        dateTime: now.toString(),
+                        text: textController.text,
+                      );
+                    }
+                  },
+                  text: 'Post',
+                ),
               )
             ]),
             body: Padding(
@@ -44,14 +45,14 @@ class NewPostScreen extends StatelessWidget {
                       CircleAvatar(
                         radius: 20.0,
                         backgroundImage: NetworkImage(
-                            'https://image.freepik.com/free-photo/portrait-young-beautiful-playful-woman-with-bun-posing_176420-12392.jpg'),
+                            SocialCubit.get(context).userModel.image),
                       ),
                       SizedBox(
                         width: 15.0,
                       ),
                       Expanded(
-                        child:
-                            Text('Malak Esmail', style: TextStyle(height: 1.4)),
+                        child: Text(SocialCubit.get(context).userModel.name,
+                            style: TextStyle(height: 1.4)),
                       ),
                     ],
                   ),
@@ -73,7 +74,8 @@ class NewPostScreen extends StatelessWidget {
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(4),
                             image: DecorationImage(
-                                image: FileImage(SocialCubit.get(context).postImage),
+                                image: FileImage(
+                                    SocialCubit.get(context).postImage),
                                 fit: BoxFit.cover),
                           ),
                         ),

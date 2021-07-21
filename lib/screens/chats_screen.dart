@@ -5,6 +5,7 @@ import 'package:socialapp/component.dart';
 import 'package:socialapp/cubit/cubit.dart';
 import 'package:socialapp/cubit/states.dart';
 import 'package:socialapp/models/user_model.dart';
+import 'package:socialapp/screens/chat_details_screen.dart';
 
 class ChatsScreen extends StatelessWidget {
   @override
@@ -14,7 +15,8 @@ class ChatsScreen extends StatelessWidget {
           return ConditionalBuilder(
             condition: SocialCubit.get(context).users.length > 0,
             builder: (context) => ListView.separated(
-                itemBuilder: (context, index) => buildChatItem(SocialCubit.get(context).users[index]),
+                itemBuilder: (context, index) => buildChatItem(
+                    SocialCubit.get(context).users[index], context),
                 separatorBuilder: (context, index) => myDivider(),
                 itemCount: SocialCubit.get(context).users.length),
             fallback: (context) => Center(
@@ -26,9 +28,11 @@ class ChatsScreen extends StatelessWidget {
   }
 }
 
-Widget buildChatItem(UserModel model) {
+Widget buildChatItem(UserModel model, context) {
   return InkWell(
-    onTap: () {},
+    onTap: () {
+      navigateTo(context, ChatDetailsScreen(model));
+    },
     child: Padding(
       padding: const EdgeInsets.all(20.0),
       child: Row(
