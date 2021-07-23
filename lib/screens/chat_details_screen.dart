@@ -15,7 +15,9 @@ class ChatDetailsScreen extends StatelessWidget {
     return Builder(builder: (BuildContext context) {
       SocialCubit.get(context).getMessages(receiverId: userModel.uId);
       return BlocConsumer<SocialCubit, SocialStates>(
-          listener: (context, state) {},
+          listener: (context, state) {
+           
+          },
           builder: (context, state) {
             return Scaffold(
                 appBar: AppBar(
@@ -85,6 +87,7 @@ class ChatDetailsScreen extends StatelessWidget {
                                     text: textController.text,
                                     receiverId: userModel.uId,
                                     dateTime: DateTime.now().toString());
+                                    textController.clear();
                               },
                               child: Icon(Icons.send),
                             ),
