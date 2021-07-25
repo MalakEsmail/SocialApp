@@ -86,7 +86,7 @@ class SocialGetAllUsersErrorState extends SocialStates {
   SocialGetAllUsersErrorState(this.error);
 }
 
-// chat
+// chat states
 class SocialSendMessageSuccessState extends SocialStates {}
 
 class SocialSendMessageErrorState extends SocialStates {}

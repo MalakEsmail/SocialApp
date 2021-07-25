@@ -8,6 +8,7 @@ import 'package:socialapp/screens/home.dart';
 
 class RegisterScreen extends StatelessWidget {
   var formKey = GlobalKey<FormState>();
+  //////
   var emailController = TextEditingController();
   var nameController = TextEditingController();
   var passwordController = TextEditingController();
